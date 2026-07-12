@@ -1,18 +1,16 @@
 .siderbar::after {
   content: '';
   position: absolute;
-  left: 3.6rem;
-  width: 0;
+  left: 0;
+  width: 3.6rem;
   height: 100%;
   background-color: #ffffff;
-  opacity: 0;
-  transition: all 0.3s;
+  transition: width 0.3s;
   box-shadow: 4px 0 10px -8px rgba(0, 0, 0, 0.1);
   z-index: -2;
 }
 .siderbar:hover::after {
-  opacity: 1;
-  width: 7.2rem;
+  width: 10.8rem;
 }
 .siderbar:hover .navItem::after {
   pointer-events: auto;
@@ -22,11 +20,12 @@
 }
 .navtext {
   opacity: 0;
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.15s ease-in;
   pointer-events: none;
 }
 .siderbar:hover .navtext {
   opacity: 1;
+  transition: opacity 0.3s ease-out;
 }
 .navItem::after {
   content: '';
@@ -44,7 +43,7 @@
   opacity: 1;
 }
 .navicon {
-  transition: all 0.3s;
+  transition: color 0.3s;
 }
 .navItem:hover .navicon {
   color: #858585;

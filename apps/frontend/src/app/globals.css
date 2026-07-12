@@ -30,7 +30,7 @@
   user-select: none;
 }
 html {
-  font-size: clamp(1rem, 0.9142rem + 0.3661vw, 1.5rem);
+  font-size: clamp(0.875rem, 1.2vw, 1.25rem);
 }
 body,
 html {
@@ -39,4 +39,10 @@ html {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-harmonyos-sans), var(--font-noto-sans), Arial, Helvetica, sans-serif;
+}
+.contain {
+  scrollbar-width: none;
+}
+.contain::-webkit-scrollbar {
+  display: none;
 }

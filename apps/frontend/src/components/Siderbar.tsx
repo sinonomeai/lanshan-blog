@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { Icon } from '@/components/Icon';
 import { useState } from 'react';
-import styles from '../../page.module.css';
+import styles from '../app/page.module.css';
 const links = [
   { name: 'aboutus' as const, href: '#about', cn_name: '关于我们' },
   { name: 'organization' as const, href: '#organization', cn_name: '组织架构' },
@@ -54,7 +54,8 @@ export const Siderbar = () => {
     <div
       className={`${styles.siderbar} h-screen w-[3.6rem] relative
 	    flex flex-col items-center justify-between
-        group`}
+      group
+        `}
     >
       {/* 蓝色logo */}
       <div className="absolute w-[2.5rem] left-1/2 -translate-x-1/2 top-[1rem] pointer-events-none">
@@ -84,8 +85,7 @@ export const Siderbar = () => {
               />
               <div
                 className={`${styles.navtext} absolute left-[3.6rem] 
-                whitespace-nowrap text-[0.6rem]
-                transition-all duration-300 ease-in-out`}
+                whitespace-nowrap text-[0.6rem]`}
               >
                 <span>{cn_name}</span>
               </div>
@@ -109,7 +109,7 @@ export const Siderbar = () => {
           w-full h-full rounded-[4px]
           bg-[#00e5ff] 
           opacity-0 hover:opacity-100
-          transition-all duration-100 z-0"
+          transition-opacity duration-100 z-0"
         ></div>
         <Icon
           name="joinus"
@@ -118,7 +118,7 @@ export const Siderbar = () => {
           pointer-events-none
           absolute top-[0.5rem] left-[0.5rem]
           text-[#ffffff]
-          transition-all duration-300 ease-in-out
+          transition-colors duration-300 ease-in-out
           `}
         />
         <div
@@ -127,7 +127,7 @@ export const Siderbar = () => {
             bg-[#ffffff4d] 
             top-[2rem] left-[0.3rem]
             group-hover:top-[5rem]
-            transition-all duration-300 ease-in-out
+            transition-[top,background-color] duration-300 ease-in-out
             `}
         />
         <div
@@ -137,27 +137,27 @@ export const Siderbar = () => {
           w-[2rem]
           text-center text-[0.7rem] text-[#ffffff] font-bold  
           group-hover:top-[5.5rem]
-          transition-all duration-300 ease-in-out`}
+          transition-[top,color] duration-300 ease-in-out`}
         >
           <span>加入我们</span>
         </div>
         {/* 横向 */}
         <div
           className={`${styles.joinLine}
-            absolute bottom-[0.3rem] left-[3rem]
+            absolute bottom-[0.3rem] left-[2.5rem]
             w-[2px] h-[1.4rem] bg-[#ffffff4d]
             opacity-0 group-hover:opacity-100
-            transition-all duration-300 ease-in-out 
+            transition-[opacity,background-color] duration-300 ease-in-out
             pointer-events-none`}
         />
         <div
           className={`${styles.joinText}
           absolute
-          bottom-[0.5rem] left-[5rem]
+          bottom-[0.5rem] left-[4.5rem]
           w-[2rem]
           text-center text-[0.7rem] text-[#ffffff] font-bold whitespace-nowrap
           opacity-0 group-hover:opacity-100
-          transition-all duration-300 ease-in-out 
+          transition-[opacity,color] duration-300 ease-in-out
           pointer-events-none`}
         >
           <span>加入我们</span>
