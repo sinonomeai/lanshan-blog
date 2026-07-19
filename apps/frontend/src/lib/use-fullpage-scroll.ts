@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useCallback } from 'react';
+import { useMarqueeStore } from '../components/MarqueeStore';
 
 /**
  * 全屏滚动 Hook
@@ -167,6 +168,15 @@ export const useFullpageScroll = (containerRef: React.RefObject<HTMLDivElement |
       }
 
       const dir = e.deltaY > 0 ? 1 : -1;
+
+      // 字幕方向切换
+      const { isReversed, toggleReverse } = useMarqueeStore.getState();
+      if (dir === 1 && !isReversed) {
+        toggleReverse(); // 向下滑 -> 反转
+      } else if (dir === -1 && isReversed) {
+        toggleReverse(); // 向上滑 -> 恢复
+      }
+
       const st = container.scrollTop;
       const s2 = secondTopRef.current;
 
