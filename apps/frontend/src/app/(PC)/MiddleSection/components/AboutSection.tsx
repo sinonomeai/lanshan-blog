@@ -1,148 +1,155 @@
+import { useEffect, useRef } from 'react';
 import Marquee from '@/components/Marquee';
 import styles from './AboutSection.module.css';
-import Image from 'next/image';
 
-const barcodeData = [
-  { x: 0, w: 2 },
-  { x: 4, w: 1 },
-  { x: 6, w: 3 },
-  { x: 10, w: 1 },
-  { x: 13, w: 2 },
-  { x: 16, w: 1 },
-  { x: 19, w: 4 },
-  { x: 25, w: 1 },
-  { x: 28, w: 2 },
-  { x: 32, w: 3 },
-  { x: 38, w: 1 },
-  { x: 42, w: 2 },
-  { x: 46, w: 1 },
-  { x: 50, w: 4 },
-  { x: 56, w: 1 },
-  { x: 59, w: 2 },
-  { x: 63, w: 1 },
-  { x: 66, w: 2 },
-  { x: 70, w: 3 },
-  { x: 75, w: 1 },
-  { x: 79, w: 2 },
-  { x: 83, w: 1 },
-  { x: 87, w: 4 },
-  { x: 93, w: 2 },
-  { x: 97, w: 1 },
-  { x: 101, w: 3 },
-  { x: 106, w: 1 },
-  { x: 110, w: 2 },
-  { x: 114, w: 3 },
-  { x: 118, w: 2 },
-];
-
-const text = ' // LANSHAN-BEYOND LANSHAN  YOUR POTENTIAL AWAITS ';
+const text_1 = ' // LANSHAN-BEYOND LANSHAN  YOUR POTENTIAL AWAITS ';
+const text_2 = ' \\\\ UI DESIGN PRODUCT OPERATIONS OPERATION SECURITY FRONTEND BACKEND ';
 
 export const PC_AboutSection = () => {
+  const overlayRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = document.querySelector('.contain') as HTMLElement;
+    const section = document.getElementById('about');
+    if (!container || !section) return;
+
+    const handleScroll = () => {
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      const scrollTop = container.scrollTop;
+
+      // 计算 section 的退出进度：0（刚进入视口顶部）~ 1（完全滚走）
+      const progress = Math.max(0, Math.min(1, (scrollTop - sectionTop) / sectionHeight));
+
+      if (overlayRef.current) {
+        const opacity = Math.min(1, progress * 2);
+        overlayRef.current.style.opacity = String(opacity);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section id="about" className="section h-screen w-full flex flex-col overflow-hidden">
+    <section id="about" className="section h-screen w-full flex flex-col overflow-hidden relative">
+      {/* 遮罩层：用 ref 直接控制 opacity */}
+      <div ref={overlayRef} className={styles.darkOverlay} />
+
       {/* 滚动字幕 */}
       <Marquee
-        text={text}
-        bgColor={'#EEEDED'}
-        textColor={'#CECECE'}
-        lgText={'text-9xl'}
+        text={text_1}
+        bgColor={'bg-white'}
+        textColor={'text-black'}
+        lgText={'text-4xl'}
         normalTextSize={'text-8xl'}
+        direction="left"
+      />
+      <Marquee
+        text={text_2}
+        bgColor={'bg-white'}
+        textColor={'text-black'}
+        lgText={'text-4xl'}
+        normalTextSize={'text-8xl'}
+        direction="right"
       />
 
-      <div className="flex-1 relative bg-white text-black overflow-hidden ">
-        {/* 波点背景 */}
-        <div className="absolute inset-x-0 top-0 bg-[radial-gradient(circle,#000_1.6px,transparent_1.2px)] bg-size-[8px_8px] h-15 w-full"></div>
-
+      <div className="relative bg-white text-black overflow-hidden ">
         {/* 斜线背景 */}
-        <div className="absolute bottom-0 top-14 right-0 bg-[repeating-linear-gradient(-45deg,transparent,transparent_4px,#C0C0C0_6px,#C0C0C0_5px)] h-full w-15"></div>
+        {/* <div className="absolute bottom-0 top-20 right-0 bg-[repeating-linear-gradient(-45deg,transparent,transparent_4px,#C0C0C0_6px,#C0C0C0_5px)] h-full w-15"></div> */}
 
-        {/* 小圆点装饰-左 */}
-        <div className="absolute top-4 left-6">
-          <div className={`${styles.dotsBase} ${styles.dotsLt} absolute `}></div>
-        </div>
-
-        {/* 小圆点装饰-右 */}
-        <div className="absolute top-20 right-20">
-          <div className={`${styles.dotsBase} ${styles.dotsRt} absolute`}></div>
-        </div>
-
-        <div className="w-full h-full font-semibold flex flex-col relative">
-          <header className="flex flex-col pl-20 pt-4 gap-2 pb-15 border-b-2 border-[#D1D1D1]">
-            <span className="xl:text-8xl lg:text-7xl text-6xl tracking-tight">ABOUT US</span>
-            <span className="xl:text-2xl lg:text-xl lg:tracking-wider">
-              PIONEERS OF EXPLORETION
-            </span>
+        <div className="w-full h-full font-semibold flex flex-col flex-1 relative">
+          <header
+            className={`${styles.headerHover} flex flex-col pl-10 pt-4 mt-16 gap-1 pb-4 mb-10 bg-[#f0f0f076]`}
+          >
+            <div>
+              <div className="inline-flex h-5 w-20 bg-[#D9D9D9] justify-end pr-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 23 23"
+                  className="SectionTitle_arrow__qXHl7 "
+                  height={20}
+                  width={20}
+                >
+                  <path
+                    fillRule="evenodd"
+                    fill="currentColor"
+                    d="M2.673,22.418 L2.673,19.398 L17.146,19.398 L0.740,2.992 L2.875,0.857 L19.280,17.263 L19.280,2.791 L22.300,2.791 L22.300,22.418 L2.673,22.418 Z"
+                  ></path>
+                </svg>
+              </div>
+              <span className="xl:text-xl lg:text-xl font-medium pl-2">ABOUT US</span>
+            </div>
+            <span className="xl:text-4xl lg:text-7xl text-6xl tracking-tight">关于我们</span>
           </header>
 
-          <main className="grid grid-cols-[1fr_3fr_1fr] flex-1 min-h-0">
-            <div className="flex flex-col border-r-2 border-[#D1D1D1] gap-4 ">
-              <span className="xl:text-md lg:text-sm  pt-8 pr-4 tracking-widest pl-8">
-                LET THE WORLD SEE YOUR POTENTIAL
-              </span>
-              <div className="flex flex-col gap-4 pl-8">
-                <span>___</span>
-                <span>___</span>
-                <span>___</span>
-              </div>
-              <div className="flex flex-col gap-4 text-xs pl-8">
-                <span>01</span>
-                <span>02</span>
-                <span>03</span>
-              </div>
-
-              <div className="w-full h-48 bg-[#D9D9D9] mt-20 relative">
-                <div className="absolute top-0 left-0 w-8 h-4 bg-[#FF19AB]"></div>
-                <div className="absolute top-6 left-0 w-8 h-3 bg-[#FFFA00]"></div>
-                <div className="absolute top-11 left-0 w-8 h-1.5 bg-[#00D4FF]"></div>
-
-                <div className="absolute bottom-0 right-0">
-                  <svg width="120" height="30" viewBox="0 0 120 30">
-                    {barcodeData.map((bar, i) => (
-                      <rect key={i} x={bar.x} y={0} width={bar.w} height={30} fill="black" />
-                    ))}
-                  </svg>
+          <main className="min-h-0 flex flex-1 gap-2">
+            <div className="flex flex-col gap-36">
+              <div className="flex flex-col gap-4 pl-10">
+                <p className="xl:text-md lg:text-sm  pt-8 pr-4 tracking-widest">
+                  LET THE WORLD
+                  <span className="block">SEE YOUR POTENTIAL</span>
+                </p>
+                <div className="flex flex-col gap-4 ">
+                  <span>___</span>
+                  <span>___</span>
+                  <span>___</span>
                 </div>
-
-                <div className="absolute 2xl:top-[-120] xl:top-[-80] md:top-[-60] sm:top-[-40]   2xl:left-45 lg:left-30 md:left-25 sm:left-14 bg-[#00D4FF] 2xl:w-70 2xl:h-50 xl:w-50 xl:h-40 md:w-45 md:h-45 sm:w-40 sm:h-40 h-0 w-0 flex flex-col justify-between ">
-                  <div className="bg-black sm:w-4 sm:h-4 m-4"></div>
-
-                  <div className="mb-4 ml-4">
-                    <div className="bg-black sm:w-4 md:h-20 sm: h-15 "></div>
-
-                    <div className="bg-black sm:h-4 sm:w-20"></div>
-                  </div>
+                <div className="flex flex-col">
+                  <span className="bg-[#FF1AAC] h-6 w-1"></span>
+                  <span className="bg-[#01FFA2] h-8 w-1"></span>
+                  <span className="bg-[#FFFA00] h-10 w-1"></span>
                 </div>
               </div>
 
-              <div className="flex gap-6 pl-10 absolute bottom-4">
-                <div className="w-8 h-8 bg-[#D9D9D9]">
-                  <Image src="/icon/aboutus.svg" height={60} width={60} alt="" />
-                </div>
-                <div className="w-8 h-8 bg-[#D9D9D9] flex justify-center items-center">
-                  <div className="w-6 h-6 border-6"></div>
-                </div>
+              <div className="p-4 bg-[#D9D9D9] w-fit ml-10">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 41 48"
+                  className="__05-Gameplay_icon__Yiqki text-[#A6A6A6] "
+                  height={80}
+                  width={80}
+                >
+                  <path
+                    fillRule="evenodd"
+                    fill="currentColor"
+                    d="M5.049,47.298 L5.049,41.157 L34.758,41.157 L34.758,12.322 L40.768,12.322 L40.768,41.157 L40.768,44.969 L40.768,47.298 L5.049,47.298 ZM0.243,0.899 L24.037,0.899 C26.983,3.909 28.645,5.607 31.591,8.617 L31.591,38.231 L0.243,38.231 L0.243,0.899 ZM6.587,31.401 L25.246,31.401 L25.246,26.809 L6.587,26.809 L6.587,31.401 Z"
+                  ></path>
+                </svg>
               </div>
             </div>
 
-            <div className="sm:pl-25 pl-4 sm:pr-6 pr-3 flex flex-col ">
-              <p className="indent-12 tracking-widest xl:text-2xl md:text-xl text-md font-medium mt-20">
-                蓝山工作室是重庆邮电大学教育信息化办公室/信息中心指导的，专注于教育数字化，智能化创新应用研发的学生团体.工作室以开源为导向，通过开源生态构建来培养复合型人才，在我们的github官网分享了各部门培训课件，也在字节开源组织，apache基金会等其他云原生基金会开源组织积极参与贡献，获得了不错的影响力，是一支富有创造力、朝气蓬勃的数字化队伍
-              </p>
-            </div>
-            <div className="border-l-2 border-[#D1D1D1] flex flex-col text-center pt-10 gap-4 xl:tracking-wider">
-              <p className="xl:text-2xl lg:text-xl  pr-30 pl-10">TOWARD THE FUTURE</p>
-              <p className="pr-15 xl:text-sm text-xs  ">BEYOND LANSHAN</p>
+            <div className="flex flex-1 mt-10">
+              <div className="flex flex-col flex-1 gap-20 min-w-0 p-20">
+                <div className="indent-12 tracking-widest xl:text-2xl md:text-xl text-md font-medium leading-relaxed">
+                  蓝山工作室是重庆邮电大学教育信息化办公室/信息中心指导的，专注于教育数字化、智能化创新应用研发的学生团队，开发了“We重邮”微信小程序、重庆市高校辅导员素质能力大赛系统等。工作室以开源为导向，通过开源生态构建来培养复合型人才，在我们的github官网分享了各部门培训课件，也在字节开源组织，apache基金会等其他云原生基金会开源组织积极参与贡献，获得了不错的影响力，是一支富有创造力、朝气蓬勃的数字化队伍
+                </div>
+
+                <div className="flex flex-col gap-4 xl:tracking-wider">
+                  <p className="xl:text-2xl lg:text-xl">TOWARD THE FUTURE</p>
+                  <p className="pr-15 xl:text-sm text-xs  ">BEYOND LANSHAN</p>
+                </div>
+              </div>
+
+              <div className="bg-linear-to-b from-[#00D4FF] to-transparent h-full w-40 p-4">
+                <div className="bg-white h-full w-4 relative"></div>
+                <p className="absolute top-68  [writing-mode:vertical-rl] text-4xl font-medium tracking-widest">
+                  INTRODUCTION
+                </p>
+              </div>
             </div>
           </main>
         </div>
 
-        <div className="absolute w-100 h-40 bottom-[-40] right-[-60] font-bold">
+        {/* <div className="absolute w-100 h-40 bottom-[-40] right-[-60] font-bold">
           <p className="flex flex-col gap-2 text-xs">
             <span>THE BEST WAY TO PREDICT THE FUTURE IS TO INVENT IT</span>
             <span className="indent-15">MAKE IT WORK, MAKE IT RIGHT, MAKE IT FAST</span>
             <span className="indent-29">TALK IS CHEAP, SHOW ME THE CODE</span>
           </p>
-        </div>
+        </div> */}
       </div>
     </section>
   );

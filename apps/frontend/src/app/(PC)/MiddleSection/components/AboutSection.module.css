@@ -1,39 +1,50 @@
-/* 中间圆点 */
-.dotsBase {
+.headerHover {
   position: relative;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background: black;
+  overflow: hidden;
+  transition: color 0.5s ease;
 }
 
-/* 左右圆点 */
-.dotsBase::before,
-.dotsBase::after {
+.headerHover::before {
   content: '';
   position: absolute;
-  width: 1rem;
-  height: 1rem;
-  border-radius: 50%;
-  background: black;
-}
-
-/* 左侧：往右+下 圆点 */
-.dotsLt::before {
-  left: 1.5rem;
   top: 0;
-}
-.dotsLt::after {
   left: 0;
-  top: 1.5rem;
+  width: 100%;
+  height: 100%;
+  background: #00d4ff;
+  transform: translateX(-100%);
+  transition: transform 0.5s ease-out;
+  z-index: 0;
 }
 
-/* 右侧：往左+下 圆点 */
-.dotsRt::before {
-  right: 1.5rem;
-  top: 0;
+.headerHover:hover::before {
+  transform: translateX(0);
 }
-.dotsRt::after {
-  right: 0;
-  top: 1.5rem;
+
+/* hover 时让文字升到蓝色背景之上，并变白更醒目 */
+.headerHover > * {
+  position: relative;
+  z-index: 1;
+}
+
+.headerHover:hover {
+  color: #ffffff;
+}
+
+/* 向下滚动颜色加深 */
+.darkOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  pointer-events: none;
+  z-index: 20;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(37, 39, 38, 0) 0%,
+    rgba(37, 39, 38, 0.3) 40%,
+    rgba(37, 39, 38, 1) 100%
+  );
 }

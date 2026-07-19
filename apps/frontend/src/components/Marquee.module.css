@@ -1,0 +1,29 @@
+/* 向左运动 */
+.trackLeft {
+  animation: marquee-left 40s linear infinite;
+  will-change: transform;
+}
+
+/* 向右运动 */
+.trackRight {
+  animation: marquee-right 40s linear infinite;
+  will-change: transform;
+}
+
+@keyframes marquee-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marquee-right {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
