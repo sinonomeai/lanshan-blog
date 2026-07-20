@@ -6,36 +6,45 @@ import ScrollIndicator from './components/ScrollIndicator';
 import { useEffect, useLayoutEffect, useState, useRef } from 'react';
 
 // ====== 响应式断点配置 ======
-// 按视口宽度匹配：容器宽/高 + 粒子 scale
-// 断点值：1520 / 1330 / 1200 / 1110
+// 按视口宽度匹配粒子 scale，容器大小自动计算
+// 断点值：1900 / 1520 / 1330 / 1200 / 1110 / 1024
 interface ResponsiveConfig {
   scale: number;
   w: number;
   h: number;
 }
 
-const RESPONSIVE_BREAKPOINTS: [number, ResponsiveConfig][] = [
-  [1520, { scale: 3, w: 550, h: 550 }],
-  [1330, { scale: 2.5, w: 450, h: 500 }],
-  [1200, { scale: 2, w: 400, h: 500 }],
-  [1110, { scale: 1.8, w: 380, h: 400 }],
-  [1024, { scale: 1.7, w: 320, h: 350 }],
+const RESPONSIVE_BREAKPOINTS: [number, number][] = [
+  // [视口宽度, scale]
+  [1900, 3],
+  [1520, 2.5],
+  [1330, 2],
+  [1200, 1.8],
+  [1110, 1.5],
+  [1024, 1.3],
 ];
 
-const FALLBACK_CONFIG: ResponsiveConfig = { scale: 1.5, w: 280, h: 300 };
+const FALLBACK_SCALE = 1;
 
+// 源图采样后最大宽度 300，粒子分布范围 = 300 * scale
+// 容器需要 ≥ 粒子分布范围，+20px 留点呼吸边距
 function getResponsiveConfig(vw: number): ResponsiveConfig {
-  for (const [bp, cfg] of RESPONSIVE_BREAKPOINTS) {
-    if (vw >= bp) return cfg;
+  let scale = FALLBACK_SCALE;
+  for (const [bp, s] of RESPONSIVE_BREAKPOINTS) {
+    if (vw >= bp) {
+      scale = s;
+      break;
+    }
   }
-  return FALLBACK_CONFIG;
+  const size = Math.ceil(300 * scale) + 20;
+  return { scale, w: size, h: size };
 }
 
 export const PC_HeroSection = () => {
   const [showTrans, setShowTrans] = useState(false);
   const canvasRef = useRef<ParticleCanvasHandle>(null);
-  const [boxW, setBoxW] = useState(FALLBACK_CONFIG.w);
-  const [boxH, setBoxH] = useState(FALLBACK_CONFIG.h);
+  const [boxW, setBoxW] = useState(320);
+  const [boxH, setBoxH] = useState(320);
   useLayoutEffect(() => {
     const { w, h } = getResponsiveConfig(window.innerWidth);
     setBoxW(w);
