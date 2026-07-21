@@ -18,13 +18,14 @@ function Marquee({ text, bgColor, textColor, direction = 'left' }: MarqueeProps)
   const targetSpeedRef = useRef(0); // 目标速度
 
   const isReversed = useMarqueeStore((state) => state.isReversed);
+  const hasMountedRef = useRef(false);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
     // 默认速度：direction = left 则向左（负值），right 则向右（正值）
-    const base = 0.8; // 匀速速度，单位 px/帧，可调
+    const base = 1; // 匀速速度，单位 px/帧，可调
     const defaultSpeed = direction === 'left' ? -base : base;
 
     // 根据全局反转状态，决定基础方向
@@ -55,43 +56,27 @@ function Marquee({ text, bgColor, textColor, direction = 'left' }: MarqueeProps)
     rafId = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(rafId);
   }, [direction]);
-  // isReversed 变化时，useEffect 会重跑，但这里其实不需要重跑
 
   useEffect(() => {
-    const base = 0.8;
+    const base = 1;
     const defaultSpeed = direction === 'left' ? -base : base;
-    targetSpeedRef.current = isReversed ? -defaultSpeed : defaultSpeed;
-  }, [isReversed, direction]);
+    const target = isReversed ? -defaultSpeed : defaultSpeed;
 
-  // 滑动时临时加速
-  useEffect(() => {
-    const container = document.querySelector('.contain') as HTMLElement;
-    if (!container) return;
+    if (hasMountedRef.current) {
+      // 切换方向瞬间加速 2 倍，300ms 后恢复匀速
+      targetSpeedRef.current = target * 2;
 
-    const base = 0.8;
-    const defaultSpeed = direction === 'left' ? -base : base;
-
-    let timeoutId: ReturnType<typeof setTimeout>;
-
-    const handleWheel = (e: WheelEvent) => {
-      const scrollingDown = e.deltaY > 0;
-
-      // 向下滑：反转方向 + 加速
-      targetSpeedRef.current = isReversed ? -defaultSpeed * 3 : defaultSpeed * 3;
-
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        // 恢复当前状态对应的匀速
-        targetSpeedRef.current = isReversed ? -defaultSpeed : defaultSpeed;
+      const timeoutId = setTimeout(() => {
+        targetSpeedRef.current = target;
       }, 300);
-    };
 
-    container.addEventListener('wheel', handleWheel, { passive: true });
-    return () => {
-      container.removeEventListener('wheel', handleWheel);
-      clearTimeout(timeoutId);
-    };
-  }, [direction, isReversed]);
+      return () => clearTimeout(timeoutId);
+    } else {
+      // 首次 mount，直接匀速
+      targetSpeedRef.current = target;
+      hasMountedRef.current = true;
+    }
+  }, [isReversed, direction]);
 
   return (
     <div className={`${bgColor} ${textColor} overflow-hidden w-full`}>

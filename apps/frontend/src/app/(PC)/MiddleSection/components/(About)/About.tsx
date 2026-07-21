@@ -1,9 +1,29 @@
+'use client';
+import { useEffect } from 'react';
 import Marquee from './components/Marquee';
+import { useMarqueeStore } from './lib/MarqueeStore';
 
 const text_1 = ' // LANSHAN-BEYOND LANSHAN  YOUR POTENTIAL AWAITS\u00A0';
-const text_2 = ' \\\\ UI DESIGN PRODUCT OPERATIONS OPERATION SECURITY FRONTEND BACKEND\u00A0';
+const text_2 = ' \\\\ UI DESIGN PRODUCT OPERATION SECURITY FRONTEND BACKEND\u00A0';
 
 export const PC_AboutSection = () => {
+  const setReversed = useMarqueeStore((state) => state.setReversed);
+
+  useEffect(() => {
+    const container = document.querySelector('.contain') as HTMLElement | null;
+    if (!container) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      const next = e.deltaY > 0;
+      if (useMarqueeStore.getState().isReversed !== next) {
+        setReversed(next);
+      }
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: true });
+    return () => container.removeEventListener('wheel', handleWheel);
+  }, [setReversed]);
+
   return (
     <div id="about" className="section h-screen w-full flex flex-col overflow-hidden relative">
       <div className="w-full min-h-0 font-semibold flex flex-col flex-1 overflow-hidden">
