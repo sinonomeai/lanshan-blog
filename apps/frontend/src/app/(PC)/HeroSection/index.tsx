@@ -11,38 +11,31 @@ import {
 } from '@/lib/hero-particle-system';
 
 // ====== 响应式断点配置 ======
-// 按视口宽度匹配粒子 scale，容器大小自动计算
-// 断点值：1900 / 1520 / 1330 / 1200 / 1110 / 1024
+// 按视口宽度匹配：粒子 scale / gap + 容器宽/高
 interface ResponsiveConfig {
   scale: number;
+  gap: number;
   w: number;
   h: number;
 }
 
-const RESPONSIVE_BREAKPOINTS: [number, number][] = [
-  // [视口宽度, scale]
-  [1900, 2.4],
-  [1520, 2.0],
-  [1330, 1.6],
-  [1200, 1.4],
-  [1110, 1.2],
-  [1024, 1.0],
+const RESPONSIVE_BREAKPOINTS: [number, number, number, number, number][] = [
+  // [视口宽度, scale, gap, w, h]
+  [1900, 2.4, 2, 740, 740],
+  [1520, 1.8, 2, 620, 620],
+  [1330, 1.6, 2, 500, 500],
+  [1200, 1.3, 3, 440, 440],
+  [1110, 1.2, 3, 380, 380],
+  [1024, 1.1, 3, 320, 320],
 ];
 
-const FALLBACK_SCALE = 0.8;
+const FALLBACK_CONFIG: ResponsiveConfig = { scale: 0.8, gap: 2, w: 260, h: 260 };
 
-// 源图采样后最大宽度 300，粒子分布范围 = 300 * scale
-// 容器需要 ≥ 粒子分布范围，+20px 留点呼吸边距
 function getResponsiveConfig(vw: number): ResponsiveConfig {
-  let scale = FALLBACK_SCALE;
-  for (const [bp, s] of RESPONSIVE_BREAKPOINTS) {
-    if (vw >= bp) {
-      scale = s;
-      break;
-    }
+  for (const [bp, scale, gap, w, h] of RESPONSIVE_BREAKPOINTS) {
+    if (vw >= bp) return { scale, gap, w, h };
   }
-  const size = Math.ceil(300 * scale) + 20;
-  return { scale, w: size, h: size };
+  return FALLBACK_CONFIG;
 }
 
 export const PC_HeroSection = () => {
@@ -70,6 +63,7 @@ export const PC_HeroSection = () => {
       setBoxW(cfg.w);
       setBoxH(cfg.h);
       canvasRef.current?.setParam('scale', cfg.scale);
+      canvasRef.current?.setParam('gap', cfg.gap);
 
       // ---- DEBUG: canvas 响应式参数 ----
       console.group('🎨 Hero Canvas Responsive');

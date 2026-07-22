@@ -15,14 +15,14 @@ export interface ParticleParams {
 }
 
 export const PARTICLE_DEFAULTS: ParticleParams = {
-  gap: 3,
+  gap: 2,
   scale: 2.5,
   stiffness: 0.001,
   damping: 0.001,
   jitter: 0,
-  size: 2,
+  size: 1.5,
   repel: 1,
-  radius: 30,
+  radius: 10,
   float: 0.03,
 };
 
@@ -237,9 +237,8 @@ export class ParticleSystem {
     const canvas = this.app?.canvas as HTMLCanvasElement | undefined;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    this.mouseX = (e.clientX - rect.left) * dpr;
-    this.mouseY = (e.clientY - rect.top) * dpr;
+    this.mouseX = e.clientX - rect.left;
+    this.mouseY = e.clientY - rect.top;
     this.mouseOnCanvas = true;
   };
 
