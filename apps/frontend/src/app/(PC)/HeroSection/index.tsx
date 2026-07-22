@@ -69,25 +69,21 @@ export const PC_HeroSection = () => {
       const cfg = getResponsiveConfig(window.innerWidth);
       setBoxW(cfg.w);
       setBoxH(cfg.h);
-      // 粒子系统内部会自动 × DPR，这里只需传基础 scale
       canvasRef.current?.setParam('scale', cfg.scale);
 
       // ---- DEBUG: canvas 响应式参数 ----
       console.group('🎨 Hero Canvas Responsive');
       console.log('视口宽度', window.innerWidth, 'px');
       console.log('视口高度', window.innerHeight, 'px');
-      console.log('devicePixelRatio (clamped)', dpr);
-      console.log('基础 scale（断点匹配）', cfg.scale);
-      console.log('有效 scale（基础 × dpr）', cfg.scale * dpr);
-      console.log('有效 size（默认 × dpr）', PARTICLE_DEFAULTS.size * dpr);
-      console.log('容器 CSS 尺寸', `${cfg.w} × ${cfg.h}`, 'px');
-      console.log('Canvas 内部尺寸', `${cfg.w * dpr} × ${cfg.h * dpr}`, 'px');
+      console.log('devicePixelRatio', dpr);
+      console.log('匹配 scale', cfg.scale);
+      console.log('容器尺寸', `${cfg.w} × ${cfg.h}`, 'px');
       console.log(
-        '粒子分布范围 (内部像素)',
-        `${Math.ceil(300 * cfg.scale * dpr)} × ${Math.ceil(300 * cfg.scale * dpr)}`,
+        '粒子分布范围',
+        `${Math.ceil(300 * cfg.scale)} × ${Math.ceil(300 * cfg.scale)}`,
         'px',
       );
-      console.log('覆盖率', `${(((300 * cfg.scale * dpr) / (cfg.w * dpr)) * 100).toFixed(1)}%`);
+      console.log('覆盖率', `${(((300 * cfg.scale) / cfg.w) * 100).toFixed(1)}%`);
       console.groupEnd();
     };
 
